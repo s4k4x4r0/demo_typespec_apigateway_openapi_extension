@@ -1,0 +1,19 @@
+{
+	"name": "Demo TypeSpec API Gateway OpenAPI Extensions",
+	"build": {
+		"dockerfile": "Dockerfile"
+	},
+	"features": {
+		"ghcr.io/devcontainers/features/aws-cli:1": {},
+		"ghcr.io/devcontainers-extra/features/aws-cdk:2": {}
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"typespec.typespec-vscode",
+				"esbenp.prettier-vscode"
+			]
+		}
+	},
+	"postCreateCommand": "chmod u+x ./postCreateCommand.sh && ./postCreateCommand.sh"
+}
