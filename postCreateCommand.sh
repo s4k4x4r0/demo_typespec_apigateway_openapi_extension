@@ -6,3 +6,5 @@ set -euo pipefail
 if [ -f ./postCreateCommand.local.sh ]; then
     source ./postCreateCommand.local.sh
 fi
+
+npm install
