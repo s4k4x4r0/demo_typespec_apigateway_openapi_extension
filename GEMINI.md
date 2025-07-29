@@ -24,5 +24,6 @@
 
 - `requirements.md`: このプロジェクトの要件を記載しています。
 - `design.md`: 要件に基づいた、このプロジェクトの設計を記載しています。
+- `progress.md`: 作業の進捗状況を管理する。
 - `package.json`: プロジェクトの依存関係とスクリプトを定義します。
 - `GEMINI.md`: このファイル。Gemini Code Assistantにコンテキストを提供します。
