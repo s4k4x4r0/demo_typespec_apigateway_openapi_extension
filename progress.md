@@ -15,7 +15,7 @@
 ## 3. OpenAPI生成
 
 - [ ] TypeSpec CLIを使用して、定義ファイルからOpenAPI 3.0仕様を生成する。
-- [ ] `package.json`に`tsp`コマンドを登録する。
+- [v] `package.json`に`tsp`コマンドを登録する。
 - [ ] 生成されたYAMLファイルに、拡張属性が含まれていることを確認する。
 
 ## 4. 実際のAPI Gatewayデプロイ
