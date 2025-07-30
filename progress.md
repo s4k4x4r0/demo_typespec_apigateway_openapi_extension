@@ -19,12 +19,10 @@
 
 ## 4. 実際の API Gateway デプロイ
 
-- [ ] `cdk init` コマンドで TypeScript のプロジェクトを作成する。
+- [x] スクラッチの状態で`cdk synth`できるようにする
+- [ ] 前提となる AWS リソース（Lambda, Cognito）のCDKコードを記述する。
+- [ ] `SpecRestApi` を使用して API GatewayのCDKコードを記述する。（OpenAPIファイルのプレースホルダー部分を置き換えるような処理を入れる）
 - [ ] AWS プロファイルを設定する（`postCreateCommand.local.sh` を使用）。
-- [ ] AWS CDK (TypeScript) を使用して、生成された OpenAPI 仕様から API Gateway をデプロイする。
-- [ ] CDK で前提となる AWS リソース（Lambda, Cognito）を構築する。
-- [ ] `SpecRestApi` を使用して API Gateway を構築する。
-- [ ] `tsp-output/openapi.yaml` のプレースホルダー（Lambda ARN, Cognito User Pool Authorizer IDなど）を実際の値に置き換える。
 - [ ] `cdk deploy` を実行してデプロイする。
 
 ## 5. Codespaces 対応

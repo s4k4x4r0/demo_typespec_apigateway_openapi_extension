@@ -8,4 +8,14 @@ dist/
 # Dependency directories
 node_modules/
 
+# TypeScript Compiler output
+*.js
+!jest.config.js
+*.d.ts
+
+# CDK asset staging directory
+.cdk.staging
+cdk.out
+
+
 postCreateCommand.local.sh
