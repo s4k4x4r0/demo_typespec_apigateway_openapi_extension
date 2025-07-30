@@ -50,7 +50,7 @@ AWS CDK (TypeScript) を使用して、生成されたOpenAPI仕様からAPI Gat
 
 - **CDK事前設定:**
   - CDK CLIのインストールは[Dev Containers Features](./.devcontainer/devcontainer.json)で設定。
-  - `cdk init`コマンドでTypeScriptのプロジェクトを作成する。
+  - 既存のNode.jsプロジェクトにCDKを統合する。
 - **AWSのプロファイル:**
   - このレポジトリを`git clone`した開発者が個別に設定する。
     - `postCreateCommand.local.sh`で設定するのを推奨。
