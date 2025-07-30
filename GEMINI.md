@@ -18,7 +18,7 @@
 このプロジェクトの主要なコマンドは、TypeSpecコードをコンパイルしてOpenAPI仕様を生成することです。
 
 - **`npm install`**: 必要な依存関係をインストールします。
-- **`npm run tsp`**: `main.tsp`ファイルをコンパイルし、`tsp-output/schema`ディレクトリにOpenAPI仕様を生成します。
+- **`npm run tsp`**: `main.tsp`ファイルをコンパイルし、`tsp-output/schema`ディレクトリにOpenAPI仕様を生成します。**TypeSpecファイルを変更した後は、必ずこのコマンドを実行してコンパイルが成功することを確認してください。**
 
 ## プロジェクト構造
 

@@ -2,8 +2,7 @@
 
 ## 1. 基本的なTypeSpecファイルの作成
 
-- [ ] `main.tsp` に、基本的なAPIとモデルを定義する。
-  - 現状は、サンプル記載のままで、本来の記載になっていない。
+- [x] `main.tsp` に、基本的なAPIとモデルを定義する。
 
 ## 2. AWS固有の拡張を追加
 
@@ -14,8 +13,8 @@
 
 ## 3. OpenAPI生成
 
-- [ ] TypeSpec CLIを使用して、定義ファイルからOpenAPI 3.0仕様を生成する。
-- [v] `package.json`に`tsp`コマンドを登録する。
+- [x] TypeSpec CLIを使用して、定義ファイルからOpenAPI 3.0仕様を生成する。
+- [x] `package.json`に`tsp`コマンドを登録する。
 - [ ] 生成されたYAMLファイルに、拡張属性が含まれていることを確認する。
 
 ## 4. 実際のAPI Gatewayデプロイ
@@ -29,8 +28,8 @@
 
 ## 5. Codespaces対応
 
-- [v] `devcontainer.json` と `Dockerfile` を作成する。
-- [v] `postCreateCommand` で `npm install` を実行する。
+- [x] `devcontainer.json` と `Dockerfile` を作成する。
+- [x] `postCreateCommand` で `npm install` を実行する。
 
 ## 6. 動作確認
 

@@ -1,17 +1,13 @@
 import "@typespec/http";
+import "@typespec/rest";
 
 using Http;
-@service(#{ title: "Widget Service" })
+
+@service
 namespace DemoService;
 
-model Widget {
-  id: string;
-  weight: int32;
-  color: "red" | "blue";
-}
-
-model WidgetList {
-  items: Widget[];
+model Message {
+  content: string;
 }
 
 @error
@@ -20,25 +16,9 @@ model Error {
   message: string;
 }
 
-model AnalyzeResult {
-  id: string;
-  analysis: string;
-}
-
-@route("/widgets")
-@tag("Widgets")
-interface Widgets {
-  /** List widgets */
-  @get list(): WidgetList | Error;
-  /** Read widgets */
-  @get read(@path id: string): Widget | Error;
-  /** Create a widget */
-  @post create(@body body: Widget): Widget | Error;
-  /** Update a widget */
-  @patch update(@path id: string, @body body: MergePatchUpdate<Widget>): Widget | Error;
-  /** Delete a widget */
-  @delete delete(@path id: string): void | Error;
-
-  /** Analyze a widget */
-  @route("{id}/analyze") @post analyze(@path id: string): AnalyzeResult | Error;
+@route("/hello")
+interface Hello {
+  @get
+  @tag("Default")
+  get(): Message | Error;
 }
