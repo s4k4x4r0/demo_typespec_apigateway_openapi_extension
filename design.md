@@ -69,8 +69,9 @@ AWS CDK (TypeScript) を使用して、生成されたOpenAPI仕様からAPI Gat
   - API Gatewayのリソースを構築します。
     - `aws-cdk-lib/aws_apigateway` の `SpecRestApi` を使用します。
       - `apiDefinition` プロパティ
-      - `tsp-output/openapi.yaml`（ARNがプレースホルダーの状態）をベースにする。
-      - `tsp-output/openapi.yaml`のプレースホルダー部分を、実際のARNに置き換え、`apiDefinition` プロパティの設定値とする。
+      - `tsp-output/openapi.yaml` を読み込み、その内容を文字列として取得します。
+      - 取得した文字列内のプレースホルダー (`{{lambda_integration_uri}}`, `{{cognito_authorizer_id}}` など) を、CDKで作成したLambda関数やCognito Authorizerの実際のARN/IDに置換します。
+      - 置換後のOpenAPI仕様の文字列を `apiDefinition` プロパティの設定値とします。
 - **デプロイ手順:**
   - `cdk deploy` を実行してデプロイします。
 
