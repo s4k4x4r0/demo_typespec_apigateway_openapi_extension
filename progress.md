@@ -1,37 +1,38 @@
 # TODO
 
-## 1. 基本的なTypeSpecファイルの作成
+## 1. 基本的な TypeSpec ファイルの作成
 
-- [x] `main.tsp` に、基本的なAPIとモデルを定義する。
+- [x] `main.tsp` に、基本的な API とモデルを定義する。
 
-## 2. AWS固有の拡張を追加
+## 2. AWS 固有の拡張を追加
 
-- [ ] `@amazon-apigateway/openapi-ext` ライブラリを使用し、AWS固有の拡張情報を付与する。
-- [ ] `x-amazon-apigateway-integration` を使用して、バックエンドのLambda関数と統合する。
-- [ ] `x-amazon-apigateway-authtype` を `cognito_user_pools` に設定する。
-- [ ] `x-amazon-apigateway-authorizer` で、使用するCognito User Poolオーソライザーを指定する。
+- [x] TypeSpec の`@extension`デコレータを使用し、AWS 固有の拡張情報を付与する。
+- [x] `x-amazon-apigateway-integration` を使用して、バックエンドの Lambda 関数と統合する。
+- [x] `x-amazon-apigateway-authtype` を `cognito_user_pools` に設定する。
+- [x] `x-amazon-apigateway-authorizer` で、使用する Cognito User Pool オーソライザーを指定する。
 
-## 3. OpenAPI生成
+## 3. OpenAPI 生成
 
-- [x] TypeSpec CLIを使用して、定義ファイルからOpenAPI 3.0仕様を生成する。
+- [x] TypeSpec CLI を使用して、定義ファイルから OpenAPI 3.0 仕様を生成する。
 - [x] `package.json`に`tsp`コマンドを登録する。
-- [ ] 生成されたYAMLファイルに、拡張属性が含まれていることを確認する。
+- [x] 生成された YAML ファイルに、拡張属性が含まれていることを確認する。
 
-## 4. 実際のAPI Gatewayデプロイ
+## 4. 実際の API Gateway デプロイ
 
-- [ ] `cdk init` コマンドでTypeScriptのプロジェクトを作成する。
-- [ ] AWSプロファイルを設定する（`postCreateCommand.local.sh` を使用）。
-- [ ] AWS CDK (TypeScript) を使用して、生成されたOpenAPI仕様からAPI Gatewayをデプロイする。
-- [ ] CDKで前提となるAWSリソース（Lambda, Cognito）を構築する。
-- [ ] `SpecRestApi` を使用してAPI Gatewayを構築する。
+- [ ] `cdk init` コマンドで TypeScript のプロジェクトを作成する。
+- [ ] AWS プロファイルを設定する（`postCreateCommand.local.sh` を使用）。
+- [ ] AWS CDK (TypeScript) を使用して、生成された OpenAPI 仕様から API Gateway をデプロイする。
+- [ ] CDK で前提となる AWS リソース（Lambda, Cognito）を構築する。
+- [ ] `SpecRestApi` を使用して API Gateway を構築する。
+- [ ] `tsp-output/openapi.yaml` のプレースホルダー（Lambda ARN, Cognito User Pool Authorizer IDなど）を実際の値に置き換える。
 - [ ] `cdk deploy` を実行してデプロイする。
 
-## 5. Codespaces対応
+## 5. Codespaces 対応
 
 - [x] `devcontainer.json` と `Dockerfile` を作成する。
 - [x] `postCreateCommand` で `npm install` を実行する。
 
 ## 6. 動作確認
 
-- [ ] デプロイされたAPI Gatewayのエンドポイントにリクエストを送信し、正常なレスポンスを確認する。
+- [ ] デプロイされた API Gateway のエンドポイントにリクエストを送信し、正常なレスポンスを確認する。
 - [ ] 認証トークンあり/なしでリクエストを送信し、認証が機能していることを確認する。
