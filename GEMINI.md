@@ -26,4 +26,5 @@
 - `design.md`: 要件に基づいた、このプロジェクトの設計を記載しています。
 - `progress.md`: 作業の進捗状況を管理する。
 - `package.json`: プロジェクトの依存関係とスクリプトを定義します。
+- `package-lock.json`: 依存関係のロックファイル。npmが管理しているので、修正禁止。
 - `GEMINI.md`: このファイル。Gemini Code Assistantにコンテキストを提供します。
