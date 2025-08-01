@@ -1,16 +1,19 @@
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
-// import * as sqs from 'aws-cdk-lib/aws-sqs';
+import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
+import * as path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export class SampleStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    // The code that defines your stack goes here
-
-    // example resource
-    // const queue = new sqs.Queue(this, 'SampleQueue', {
-    //   visibilityTimeout: cdk.Duration.seconds(300)
-    // });
+    const helloLambda = new NodejsFunction(this, "HelloLambda", {
+      entry: path.join(__dirname, "lambda/hello.ts"),
+      handler: "handler",
+    });
   }
 }
