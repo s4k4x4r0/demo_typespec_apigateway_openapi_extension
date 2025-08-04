@@ -23,6 +23,9 @@
 - [ ] 前提となる AWS リソース（Lambda, Cognito）のCDKコードを記述する。
   - [x] Lambda
   - [ ] Cognito
+- [ ] CDKを実行して、前提となる AWS リソース（Lambda, Cognito）を構築する。
+  - [x] Lambda
+  - [ ] Cognito
 - [ ] `SpecRestApi` を使用して API GatewayのCDKコードを記述する。（OpenAPIファイルのプレースホルダー部分を置き換えるような処理を入れる）
 - [ ] AWS プロファイルを設定する（`postCreateCommand.local.sh` を使用）。
 - [ ] `cdk deploy` を実行してデプロイする。
