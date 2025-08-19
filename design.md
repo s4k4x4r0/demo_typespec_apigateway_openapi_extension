@@ -96,3 +96,56 @@ CDKによってデプロイされたAPI Gatewayが、想定通りに動作する
   - `GET /hello`エンドポイントにリクエストを送信し、バックエンドのLambdaから期待通りのレスポンス（例: `{"message": "Hello, world!"}`）が返ることを確認します。
   - 認証が有効になっていることを確認するため、Cognitoで認証トークンを取得し、そのトークンをリクエストヘッダーに含めてAPIを呼び出し、正常にレスポンスが返ることを確認します。
   - 認証トークンなしでAPIを呼び出し、認証エラーが返ることを確認します。
+
+### Cognito認証トークンの取得と利用手順
+
+1.  **環境変数の設定:**
+    CDKのデプロイ完了時に出力される`UserPoolId`と`UserPoolClientId`を変数に設定します。
+
+    ```bash
+    STACK_NAME=$(cdk list --notices false)
+    USER_POOL_ID=$(aws cloudformation describe-stacks --stack-name "$STACK_NAME" --query "Stacks[0].Outputs[?OutputKey=='UserPoolId'].OutputValue" --output text)
+    USER_POOL_CLIENT_ID=$(aws cloudformation describe-stacks --stack-name "$STACK_NAME" --query "Stacks[0].Outputs[?OutputKey=='UserPoolClientId'].OutputValue" --output text)
+    EMAIL=$(< /dev/urandom tr -dc A-Za-z0-9 | head -c10; echo "@example.com")
+    PASSWORD=$(< /dev/urandom tr -dc 'a-zA-Z0-9^$*.[]()?"!@#%&/\,><:;|_~`+=\-' | head -c128)
+    ```
+
+2.  **テストユーザーの作成:**
+    AWS CLIを使用してCognitoにテストユーザーを作成します。
+
+    ```bash
+    aws cognito-idp sign-up \
+      --client-id $USER_POOL_CLIENT_ID \
+      --username $EMAIL \
+      --password $PASSWORD \
+      --user-attributes Name="email",Value="$EMAIL"
+    ```
+
+3.  **ユーザーの有効化:**
+    作成したユーザーを有効化します。
+
+    ```bash
+    aws cognito-idp admin-confirm-sign-up \
+      --user-pool-id $USER_POOL_ID \
+      --username $EMAIL
+    ```
+
+4.  **認証トークンの取得:**
+    ユーザー名とパスワードで認証し、IDトークンを取得します。
+
+    ```bash
+    ID_TOKEN=$(aws cognito-idp admin-initiate-auth \
+      --auth-flow ADMIN_USER_PASSWORD_AUTH \
+      --user-pool-id $USER_POOL_ID \
+      --client-id $USER_POOL_CLIENT_ID \
+      --auth-parameters "{\"USERNAME\":\"$EMAIL\",\"PASSWORD\":\"$PASSWORD\"}" \
+      --query 'AuthenticationResult.IdToken' \
+      --output text)
+    ```
+
+5.  **トークンを利用したAPIリクエスト:**
+    取得したIDトークンを`Authorization`ヘッダーに含めてAPIを呼び出します。
+
+    ```bash
+    curl -H "Authorization: $ID_TOKEN" <API GatewayのエンドポイントURL>/hello
+    ```

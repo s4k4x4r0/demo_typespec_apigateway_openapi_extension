@@ -30,5 +30,40 @@ export class SampleStack extends cdk.Stack {
           "const require = (await import('node:module')).createRequire(import.meta.url);const __filename = (await import('node:url')).fileURLToPath(import.meta.url);const __dirname = (await import('node:path')).dirname(__filename);",
       },
     });
+
+    const userPool = new cognito.UserPool(this, "UserPool", {
+      userPoolName: "SampleUserPool",
+      selfSignUpEnabled: true,
+      signInAliases: {
+        email: true,
+      },
+      autoVerify: {
+        email: true,
+      },
+      passwordPolicy: {
+        minLength: 8,
+        requireLowercase: true,
+        requireUppercase: true,
+        requireDigits: true,
+        requireSymbols: true,
+      },
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    });
+
+    const userPoolClient = userPool.addClient("UserPoolClient", {
+      userPoolClientName: "SampleUserPoolClient",
+      authFlows: {
+        userSrp: true,
+        adminUserPassword: true,
+      },
+    });
+
+    new cdk.CfnOutput(this, "UserPoolId", {
+      value: userPool.userPoolId,
+    });
+
+    new cdk.CfnOutput(this, "UserPoolClientId", {
+      value: userPoolClient.userPoolClientId,
+    });
   }
 }
