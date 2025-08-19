@@ -122,7 +122,7 @@ CDKによってデプロイされたAPI Gatewayが、想定通りに動作する
 ### Cognito認証トークンの取得と利用手順
 
 1.  **環境変数の設定:**
-    CDKのデプロイ完了時に出力される`UserPoolId`と`UserPoolClientId`を変数に設定します。
+    CDKのデプロイ完了時に出力されるAWSリソースのリソースIDなどと、ユーザ情報を変数に設定します。
 
     ```bash
     STACK_NAME=$(cdk list --notices false)
