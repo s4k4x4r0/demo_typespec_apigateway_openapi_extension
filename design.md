@@ -18,12 +18,34 @@ API Gatewayとの統合のため、`@amazon-apigateway/openapi-ext` ライブラ
 
 - **統合リソース:**
   - `x-amazon-apigateway-integration` を使用して、バックエンドのLambda関数と統合します。
-    - LambdaのARNはCDKの実行時までわからないので、`${lambda-hello}`のようなプレースホルダーにしておく。
+    - LambdaのARNはCDKの実行時までわからないので、`__LAMBDA_INTEGRATION_URI__`のようなプレースホルダーにしておく。
   - `type` は `aws_proxy` とし、HTTPメソッドは `POST` を指定します。
 - **認証:**
-  - `x-amazon-apigateway-authtype` を `cognito_user_pools` に設定します。
-  - `x-amazon-apigateway-authorizer` で、使用するCognito User Poolオーソライザーを指定します。
-    - CognitoユーザプールのARNはCDKの実行までわからないので、`${cognito_user_pool_arn}`のようなプレースホルダーにしておく。
+  - OpenAPIの`components.securitySchemes`に`CognitoAuthorizer`という再利用可能な認証方式を定義する。
+    - `x-amazon-apigateway-authtype` を `cognito_user_pools` に設定します。
+    - `x-amazon-apigateway-authorizer` で、使用するCognito User Poolオーソライザーを指定します。
+      - CognitoユーザプールのARNはCDKの実行時までわからないので、`__COGNITO_USERPOOL_ARN__`のようなプレースホルダーにしておく。
+    - `tsp compile`した後のOpenAPIファイルのイメージ
+      ```yaml: openapi.yamlの一部
+      # 省略
+      components:
+        securitySchemes:
+          CognitoAuthorizer:
+            type: apiKey
+            name: Authorization
+            in: header
+            x-amazon-apigateway-authtype: cognito_user_pools
+            x-amazon-apigateway-authorizer:
+              type: cognito_user_pools
+              providerARNs:
+                - __COGNITO_USERPOOL_ARN__
+      # 省略
+      paths:
+        /example:
+          get:
+            security:
+              - CognitoAuthorizer: []  ## このような形でsecuritySchemesを利用できる。
+      ```
 
 ## 3. OpenAPI生成
 
@@ -70,7 +92,7 @@ AWS CDK (TypeScript) を使用して、生成されたOpenAPI仕様からAPI Gat
     - `aws-cdk-lib/aws_apigateway` の `SpecRestApi` を使用します。
       - `apiDefinition` プロパティ
       - `tsp-output/openapi.yaml` を読み込み、その内容を文字列として取得します。
-      - 取得した文字列内のプレースホルダー (`{{lambda_integration_uri}}`, `{{cognito_authorizer_id}}` など) を、CDKで作成したLambda関数やCognito Authorizerの実際のARN/IDに置換します。
+      - 取得した文字列内のプレースホルダー (`__LAMBDA_INTEGRATION_URI__`, `__COGNITO_AUTHORIZER_ID__` など) を、CDKで作成したLambda関数やCognito Authorizerの実際のARN/IDに置換します。
       - 置換後のOpenAPI仕様の文字列を `apiDefinition` プロパティの設定値とします。
 - **デプロイ手順:**
   - `cdk deploy` を実行してデプロイします。
@@ -107,7 +129,8 @@ CDKによってデプロイされたAPI Gatewayが、想定通りに動作する
     USER_POOL_ID=$(aws cloudformation describe-stacks --stack-name "$STACK_NAME" --query "Stacks[0].Outputs[?OutputKey=='UserPoolId'].OutputValue" --output text)
     USER_POOL_CLIENT_ID=$(aws cloudformation describe-stacks --stack-name "$STACK_NAME" --query "Stacks[0].Outputs[?OutputKey=='UserPoolClientId'].OutputValue" --output text)
     EMAIL=$(< /dev/urandom tr -dc A-Za-z0-9 | head -c10; echo "@example.com")
-    PASSWORD=$(< /dev/urandom tr -dc 'a-zA-Z0-9^$*.[]()?"!@#%&/\,><:;|_~`+=\-' | head -c128)
+    PASSWORD=$(< /dev/urandom tr -dc 'a-zA-Z0-9^$*.[]()?!@#%&/\,><:;|_~`+=-' | head -c128)
+    API_ENDPOINT=$(aws cloudformation describe-stacks --stack-name "$STACK_NAME" --query "Stacks[0].Outputs[?OutputKey=='ApiEndpoint'].OutputValue" --output text)
     ```
 
 2.  **テストユーザーの作成:**
@@ -147,5 +170,5 @@ CDKによってデプロイされたAPI Gatewayが、想定通りに動作する
     取得したIDトークンを`Authorization`ヘッダーに含めてAPIを呼び出します。
 
     ```bash
-    curl -H "Authorization: $ID_TOKEN" <API GatewayのエンドポイントURL>/hello
+    curl -H "Authorization: $ID_TOKEN" ${API_ENDPOINT}/hello
     ```
