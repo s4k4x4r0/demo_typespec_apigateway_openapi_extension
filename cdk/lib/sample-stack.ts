@@ -1,4 +1,5 @@
 import * as cdk from "aws-cdk-lib";
+import * as cognito from "aws-cdk-lib/aws-cognito";
 import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as lambda_nodejs from "aws-cdk-lib/aws-lambda-nodejs";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
@@ -14,7 +15,9 @@ export class SampleStack extends cdk.Stack {
       entry: path.join(import.meta.dirname, "lambda/hello.ts"),
       handler: "handler",
       runtime: lambda.Runtime.NODEJS_22_X,
-      logRetention: logs.RetentionDays.ONE_DAY,
+      logGroup: new logs.LogGroup(this, "HelloLambdaLogGroup", {
+        retention: logs.RetentionDays.ONE_DAY,
+      }),
       loggingFormat: lambda.LoggingFormat.JSON,
       systemLogLevelV2: lambda.SystemLogLevel.DEBUG,
       applicationLogLevelV2: lambda.ApplicationLogLevel.TRACE,
